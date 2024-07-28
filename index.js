@@ -201,7 +201,7 @@ app.post('/webhook', async (req, res) => {
       try {
         const response = await axios.get(profileUrl, {
           headers: {
-            Authorization: 'Bearer Nn6YzAlk3R7IO55726lgh76pBG8Si3nqv4pbV+HuSjohOJgc7YoQI5IK3zH6CVIOtB8/1zMOyqTtpd4mhhcezyKqoha7oTQyx0CgJuyGuvcB/l7E0qB1YJ2Qxu9uUbEtCApN/eB9lWI1Qt42h46exgdB04t89/1O/w1cDnyilFU=
+            Authorization: 'Bearer Nn6YzAlk3R7IO55726lgh76pBG8Si3nqv4pbV+HuSjohOJgc7YoQI5IK3zH6CVIOtB8/1zMOyqTtpd4mhhcezyKqoha7oTQyx0CgJuyGuvcB/l7E0qB1YJ2Qxu9uUbEtCApN/eB9lWI1Qt42h46exgdB04t89/1O/w1cDnyilFU='
           }
         });
 
