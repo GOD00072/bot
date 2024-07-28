@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f9f0;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="time"]:focus,
+    select:focus,
+    button:focus {
+      border-color: #2e7d32;
+      outline: none;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .disabled-input {
+      background-color: #e0e0e0;
+      pointer-events: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #map {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+    <script>
+        async function loadFiles() {
+            const response = await fetch('/files');
+            const files = await response.json();
+            document.getElementById('fileList').innerHTML = files.map(file => 
+                `<li>${file} <button onclick="deleteFile('${file}')">Delete</button></li>`
+            ).join('');
+        }
+
+        async function uploadFile() {
+            const name = document.getElementById('fileName').value;
+            const content = document.getElementById('fileContent').value;
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, content })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            loadFiles();
+        }
+
+        async function deleteFile(name) {
+            const response = await fetch(`/delete/${name}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            loadFiles();
+        }
+    </script>
+</head>
+<body onload="loadFiles()">
+    <h1>File Manager</h1>
+    <div class="upload-section">
+        <input type="text" id="fileName" placeholder="File name">
+        <textarea id="fileContent" placeholder="File content"></textarea>
+        <button onclick="uploadFile()">Upload</button>
+    </div>
+    <ul id="fileList"></ul>
+</body>
+</html>
